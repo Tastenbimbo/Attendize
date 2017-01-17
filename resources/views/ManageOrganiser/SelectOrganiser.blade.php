@@ -23,7 +23,7 @@
                         {!!HTML::image('assets/images/logo-dark.png')!!}
                     </div>
 
-                    <h5>Continue to:</h5>
+                    <h5>{{trans('attendize.organiser.continue_to')}}:</h5>
                     <div class="list-group">
                         @foreach($organisers as $organiser)
                             <a href="{{route('showOrganiserDashboard', ['organiser_id'=>$organiser->id] )}}"
