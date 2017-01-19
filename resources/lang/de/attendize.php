@@ -12,7 +12,6 @@ return [
     | you want to customize your views to better match your application.
     |
     */
-
     'general' => [
         'hello' => 'Hallo',
         'password_reset' => 'Um dein Passwort zurück zu setzen, fülle bitte das Formular aus',
@@ -22,4 +21,16 @@ return [
     'organiser' => [
         'continue_to' => 'Weiter nach'
     ],
+
+    'events' => [
+        'upcoming_events' => 'Nächsten Events',
+        'past_events' => 'Vergangene Events'
+    ],
+
+    'email' => [
+        'tickets' => [
+            'attachement' => 'Dein Ticket ist im Anhang dieser Mail.'
+        ]
+    ]
+
 ];
