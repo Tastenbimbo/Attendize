@@ -21,5 +21,5 @@ return [
 
     'organiser' => [
         'continue_to' => 'Weiter nach'
-    ],
+    ]
 ];
