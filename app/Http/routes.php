@@ -5,6 +5,7 @@
  */
 include_once('api_routes.php');
 
+
 /*
  * -------------------------
  * Installer
@@ -19,6 +20,9 @@ Route::post('install', [
     'as' => 'postInstaller',
     'uses' => 'InstallerController@postInstaller',
 ]);
+
+Route::group(['prefix' => LaravelLocalization::setLocale()], function()
+    {
 
 /*
  * Stripe connect return
@@ -724,4 +728,4 @@ Route::get('/terms_and_conditions', [
         return 'TODO: add terms and cond';
     }
 ]);
-
+});
