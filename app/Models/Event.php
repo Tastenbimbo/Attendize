@@ -17,14 +17,14 @@ class Event extends MyBaseModel
      * @var array $rules
      */
     protected $rules = [
-        'title'               => ['required'],
-        'description'         => ['required'],
+        'title' => ['required'],
+        'description' => ['required'],
         'location_venue_name' => ['required_without:venue_name_full'],
-        'venue_name_full'     => ['required_without:location_venue_name'],
-        'start_date'          => ['required'],
-        'end_date'            => ['required'],
-        'organiser_name'      => ['required_without:organiser_id'],
-        'event_image'         => ['mimes:jpeg,jpg,png', 'max:3000'],
+        'venue_name_full' => ['required_without:location_venue_name'],
+        'start_date' => ['required'],
+        'end_date' => ['required'],
+        'organiser_name' => ['required_without:organiser_id'],
+        'event_image' => ['mimes:jpeg,jpg,png', 'max:3000'],
     ];
 
     /**
@@ -33,12 +33,12 @@ class Event extends MyBaseModel
      * @var array $messages
      */
     protected $messages = [
-        'title.required'                       => 'You must at least give a title for your event.',
-        'organiser_name.required_without'      => 'Please create an organiser or select an existing organiser.',
-        'event_image.mimes'                    => 'Please ensure you are uploading an image (JPG, PNG, JPEG)',
-        'event_image.max'                      => 'Pleae ensure the image is not larger then 3MB',
+        'title.required' => 'You must at least give a title for your event.',
+        'organiser_name.required_without' => 'Please create an organiser or select an existing organiser.',
+        'event_image.mimes' => 'Please ensure you are uploading an image (JPG, PNG, JPEG)',
+        'event_image.max' => 'Pleae ensure the image is not larger then 3MB',
         'location_venue_name.required_without' => 'Please enter a venue for your event',
-        'venue_name_full.required_without'     => 'Please enter a venue for your event',
+        'venue_name_full.required_without' => 'Please enter a venue for your event',
     ];
 
     /**
@@ -59,16 +59,6 @@ class Event extends MyBaseModel
     public function questions_with_trashed()
     {
         return $this->belongsToMany(\App\Models\Question::class, 'event_question')->withTrashed();
-    }
-
-    /**
-     * The attendees associated with the event.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function attendees()
-    {
-        return $this->hasMany(\App\Models\Attendee::class);
     }
 
     /**
@@ -233,7 +223,7 @@ class Event extends MyBaseModel
             'Attendee Name',
             'Attendee Email',
             'Attendee Ticket'
-        ], $this->questions->lists('title')->toArray());
+        ], $this->questions->pluck('title')->toArray());
 
         $attendees = $this->attendees()->has('answers')->get();
 
@@ -243,7 +233,7 @@ class Event extends MyBaseModel
 
             foreach ($this->questions as $question) {
 
-                if (in_array($question->id, $attendee->answers->lists('question_id')->toArray())) {
+                if (in_array($question->id, $attendee->answers->pluck('question_id')->toArray())) {
                     $answers[] = $attendee->answers->where('question_id', $question->id)->first()->answer_text;
                 } else {
                     $answers[] = null;
@@ -261,6 +251,16 @@ class Event extends MyBaseModel
         }
 
         return $rows;
+    }
+
+    /**
+     * The attendees associated with the event.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function attendees()
+    {
+        return $this->hasMany(\App\Models\Attendee::class);
     }
 
     /**
@@ -300,16 +300,6 @@ class Event extends MyBaseModel
     public function getBgImageUrlAttribute()
     {
         return URL::to('/') . '/' . $this->bg_image_path;
-    }
-
-    /**
-     * Get the url of the event.
-     *
-     * @return string
-     */
-    public function getEventUrlAttribute()
-    {
-        return URL::to('/') . '/e/' . $this->id . '/' . Str::slug($this->title);
     }
 
     /**
@@ -358,5 +348,15 @@ END:VCALENDAR
 ICSTemplate;
 
         return $icsTemplate;
+    }
+
+    /**
+     * Get the url of the event.
+     *
+     * @return string
+     */
+    public function getEventUrlAttribute()
+    {
+        return URL::to('/') . '/e/' . $this->id . '/' . Str::slug($this->title);
     }
 }

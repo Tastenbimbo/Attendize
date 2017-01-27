@@ -31,9 +31,9 @@ class QueueHandler
          */
 
         $data = [
-            'order'     => $order,
-            'event'     => $order->event,
-            'tickets'   => $order->event->tickets,
+            'order' => $order,
+            'event' => $order->event,
+            'tickets' => $order->event->tickets,
             'attendees' => $order->attendees,
         ];
 
@@ -48,7 +48,6 @@ class QueueHandler
         //2
         $this->orderMailer->sendOrderConfirmation($order);
         //3
-
         $this->orderMailer->sendTickets($order);
 
         $job->delete();
@@ -70,9 +69,9 @@ class QueueHandler
         }
 
         $data = [
-            'event'           => $event,
+            'event' => $event,
             'message_content' => $message_object->message,
-            'subject'         => $message_object->subject,
+            'subject' => $message_object->subject,
         ];
 
         Mail::send('Emails.messageReceived', $data, function ($message) use ($toFields, $event, $message_object) {
